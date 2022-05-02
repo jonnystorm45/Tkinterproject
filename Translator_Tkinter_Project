@@ -1,0 +1,39 @@
+from tkinter import *
+from translate import Translator
+
+Screen = Tk()
+Screen.title("Language Translator")
+
+inputLanguage = StringVar()
+translatedLanguage = StringVar()
+
+languageChoices = {'English', 'German', 'French', 'Japanese', 'Spanish'}
+inputLanguage.set("")
+translatedLanguage.set('')
+
+
+def Translate():
+    translator = Translator(from_lang=inputLanguage.get(), to_lang=translatedLanguage.get())
+    Translation = translator.translate(textVar.get())
+    outputVar.set(Translation)
+
+
+inputLanguageMenu = OptionMenu(Screen, inputLanguage, *languageChoices)
+Label(Screen, text="Choose a Language").grid(row=0, column=1)
+inputLanguageMenu.grid(row=1, column=1)
+
+translatedLanguageMenu = OptionMenu(Screen, translatedLanguage, *languageChoices)
+Label(Screen, text="Translated Language").grid(row=0, column=2)
+translatedLanguageMenu.grid(row=1, column=2)
+
+Label(Screen, text="Enter Text").grid(row=2, column=0)
+textVar = StringVar()
+Entry(Screen, textvariable=textVar).grid(row=2, column=1)
+
+Label(Screen, text="Output Text").grid(row=2, column=2)
+outputVar = StringVar()
+Entry(Screen, textvariable=outputVar).grid(row=2, column=3)
+
+Button(Screen, text="Translate", command=Translate, relief=GROOVE).grid(row=3, column=1, columnspan=3)
+
+mainloop()
