@@ -1,0 +1,79 @@
+# import all needed files and programs
+
+from tkinter import *
+from tkinter.ttk import *
+from translate import Translator
+
+# create the Tkinter main window with title
+
+Screen = Tk()
+Screen.title("Language Translator")
+
+# Define screen size
+
+Screen.geometry("500x300")
+
+# define variables for dropdown list
+
+inputLanguage = StringVar()
+translatedLanguage = StringVar()
+
+# designate choices for dropdown menu
+
+languageChoices = {'English', 'German', 'French', 'Japanese', 'Spanish'}
+inputLanguage.set("")
+translatedLanguage.set('')
+
+# define outputVar data type
+
+outputVar = StringVar()
+
+
+# define Translate function
+
+def Translate():
+    translator = Translator(from_lang=inputLanguage.get(), to_lang=translatedLanguage.get())
+    Translation = translator.translate(textVar.get())
+    outputVar.set(Translation)
+
+
+# create dropdown menus and set up grid location
+
+inputLanguageMenu = OptionMenu(Screen, inputLanguage, *languageChoices)
+Label(Screen, text="Choose a Language").grid(row=0, column=1)
+inputLanguageMenu.grid(row=1, column=1)
+
+translatedLanguageMenu = OptionMenu(Screen, translatedLanguage, *languageChoices)
+Label(Screen, text="Translated to Language").grid(row=0, column=2)
+translatedLanguageMenu.grid(row=1, column=2)
+
+# Create text box for user data entry
+
+Label(Screen, text="Enter Text").grid(row=2, column=1)
+textVar = StringVar()
+Entry(Screen, textvariable=textVar).grid(row=2, column=2)
+
+
+# create and define openNewWindow function
+
+def openNewWindow():
+    newWindow = Toplevel(Screen)
+    newWindow.title("Translation")
+
+    # define window geometry
+
+    newWindow.geometry("500x300")
+
+    # create text and output for newWindow
+
+    Label(newWindow,
+          text="Here is your translations of " + str(inputLanguage.get()) + " to " + str(
+              translatedLanguage.get())).grid(row=1, column=1)
+    Entry(newWindow, textvariable=outputVar).grid(row=2, column=1)
+
+
+# create a button to call both openNewWindow and Translate function
+
+Button(Screen, text="Translate", command=lambda: [openNewWindow(), Translate()]).grid(row=3, column=1, columnspan=3)
+
+mainloop()
